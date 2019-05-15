@@ -21,7 +21,7 @@ axis_vars <- c(
 
 
 ui <- fluidPage(
-  titlePanel("Movie explorer"),
+  titlePanel("Movie explorer, simplified"),
   fluidRow(
     column(3,
       wellPanel(
