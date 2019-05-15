@@ -1,0 +1,207 @@
+---
+title: 'R Shiny: Survey and Introduction'
+author: "Rob Purcell"
+date: "May 15, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#PATH <- dirname(sys.frame(1)$ofile) 
+```
+
+This R Markdown document is made interactive using Shiny. Unlike the more traditional workflow of creating static reports, you can now create documents that allow your readers to change the assumptions underlying your analysis and see the results immediately. 
+
+To learn more, see [Interactive Documents](http://rmarkdown.rstudio.com/authoring_shiny.html).
+
+
+## Outline
+
+- What is Shiny?
+    - Examples
+    - Definition
+        - Server and UI
+- Why should you care?
+    - R Markdown
+        - Intro
+        - Loops
+            - Rob's terrible example
+    - When to use shiny
+        - Lots of items
+        - Multiple parameter dimensions
+        - Bespoke interactivity
+    - Design pattern: filter and visualize
+        - Focus Examples:
+            - Movies
+            - Trivia Map
+            - GoT Network
+- R programming
+    - Functions, loops, Tidyverse, stats
+- Basics
+    - Inputs
+    - Outputs
+    - App structure
+    - Reactives
+    - UI structure
+    - Other elements
+- Movie Example
+- Advanced Topics
+    - Dynamic UI
+    - Modules
+- Cool Libraries that work with Shiny
+
+
+## What is shiny?
+
+### Examples
+
+- [R Shiny Gallery](https://www.rstudio.com/products/shiny/shiny-user-showcase/)
+- [Show me Shiny](https://www.showmeshiny.com/)
+- [Wordbank](http://wordbank.stanford.edu/analyses)
+- [Movie Explorer](https://shiny.rstudio.com/gallery/movie-explorer.html)
+
+#### From Brookings
+
+- [Hamilton - Where work pays](http://www.hamiltonproject.org/charts/where_work_pays_interactive)
+- [Hutchins Dashboard](https://hutchins.shinyapps.io/dashboard_new/)
+
+
+### Definition
+
+Shiny is an R library that translates specially formatted R functions into web applications. 
+
+- No web programming needed
+- Can be run locally or deployed online
+- Simple enough to be worth your time for small projects
+
+# Why Should you care?
+
+Automation allows you to substitute cleverness for drudgery.
+
+## R Markdown
+
+Simplest report automation tool -- all R users should know it and use it, and it's a good reason to learn R.
+
+You can easily include R code and output:
+
+```{r cars}
+summary(cars)
+```
+
+and also plots:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+It is possible to include loops as well; though this is both cumbersome and limited.
+
+## When to use Shiny?
+
+When some combination of the following occurs:
+
+- You want to look at a lot of figures.
+- You might want to skip around among figures.
+- Organization of figures has higher dimensionality.
+- You would like some kind of bespoke interactivity not easily or succinctly available in an existing library.
+- You'd like something shareable on the web.
+
+## Design Pattern: Filter and Show
+
+Break down a large data set using filters, then display a visualization of the filtered data. 
+
+### Examples
+
+#### Simplified Movie Explorer
+```{r movie-app, echo=T}
+# shinyAppDir(
+#   'movie-explorer-simple',
+#   options = list(
+#     width = "100%", height = 800
+#   )
+# )
+```
+
+#### Trivia Venue Map
+```{r map-app, echo=T}
+# shinyAppDir(
+#   'trivia-map',
+#   options = list(
+#     width = "100%", height = 800
+#   )
+# )
+```
+
+
+#### Co-occurrence Network 
+```{r network-app, echo=T}
+# shinyAppDir(
+#   'got-network',
+#   options = list(
+#     width = "100%", height = 800
+#   )
+# )
+```
+
+## R programming
+- What you can do with Shiny depends on what you can do with R.
+- But Shiny itself is not hard to pick up: it is a great incentive to use R in the first place!
+
+## Inputs and Outputs
+
+You can embed Shiny inputs and outputs in R markdown documents, though this requires some additional setup and access to a running R session somewhere. Outputs are automatically updated whenever inputs change.  This demonstrates how a standard R plot can be made interactive by wrapping it in the Shiny `renderPlot` function. The `selectInput` and `sliderInput` functions create the input widgets used to drive the plot.
+
+```{r eruptions, echo=T}
+# inputPanel(
+#   selectInput("n_breaks", label = "Number of bins:",
+#               choices = c(10, 20, 35, 50), selected = 20),
+#   
+#   sliderInput("bw_adjust", label = "Bandwidth adjustment:",
+#               min = 0.2, max = 2, value = 1, step = 0.2)
+# )
+# 
+# renderPlot({
+#   hist(faithful$eruptions, probability = TRUE, breaks = as.numeric(input$n_breaks),
+#        xlab = "Duration (minutes)", main = "Geyser eruption duration")
+#   
+#   dens <- density(faithful$eruptions, adjust = input$bw_adjust)
+#   lines(dens, col = "blue")
+# })
+```
+
+## Embedded Application
+
+It's also possible to embed an entire Shiny application within an R Markdown document using the `shinyAppDir` function. This example embeds a Shiny application located in another directory:
+
+```{r tabsets, echo=T}
+# shinyAppDir(
+#   system.file("examples/06_tabsets", package = "shiny"),
+#   options = list(
+#     width = "100%", height = 550
+#   )
+# )
+```
+
+## App Structure
+
+------>
+
+## Reactives
+
+------>
+
+## UI structure
+
+------>
+
+# Advanced Topics
+
+## Dynamic UI
+
+UI can be generated dynamically; this is necessary if you want your UI to in any way depend on data or calculations that you might not know in advance. 
+
+## Modules
+
+After a certain point, controlling your reactives will get complicated. Then it will get really complicated. Shiny code can be broken down into sub-units called "modules" which helps with this problem.
+
+
