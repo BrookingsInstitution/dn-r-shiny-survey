@@ -1,5 +1,6 @@
 library(tidyverse)
 library(shiny)
+library(igraph)
 library(visNetwork)
 library(leaflet)
 
@@ -49,14 +50,14 @@ server <- function(input, output, session) {
     nodes <- gotnodes
     edges <- gotedges
     
-    print(gotnodes)
+    # print(gotnodes)
     if(!is.null(input$nameSelect)){
       nodes <- filter(nodes,Group %in% input$nameSelect)
       edges <- filter(edges,to %in% nodes$id, from%in% nodes$id)
     }
     if(input$slider!=0){
       nodes <- filter(nodes,freq>input$slider)
-      print(dim(nodes))
+      #print(dim(nodes))
       edges <- filter(edges,to %in% nodes$id, from%in% nodes$id)
     }
     
